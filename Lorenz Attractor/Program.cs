@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
 namespace Lorenz_Attractor
 {
@@ -10,20 +6,20 @@ namespace Lorenz_Attractor
 	{
 		static void Main(string[] args)
 		{
-			int[] info;
 			Lorenz lorenz = new Lorenz();
-			info = lorenz.Render();
+			int[] histogram = lorenz.Render();
 
-			Bitmap bitmap = new Bitmap(Lorenz.sizeX, Lorenz.sizeY);
-			for(int height = 0; height < Lorenz.sizeY; height++)
+			Bitmap bitmap = new Bitmap(Lorenz.width, Lorenz.height);
+			for(int height = 0; height < Lorenz.height; height++)
 			{
-				for (int width = 0; width < Lorenz.sizeX; width++)
+				for (int width = 0; width < Lorenz.width; width++)
 				{
-					int hitCount = Math.Min(255, info[height * Lorenz.sizeX + width]);
+					int hitCount = Math.Min(255, histogram[height * Lorenz.width + width]);
 					Color color;
+
 					if (hitCount != 0)
 					{
-						color = Color.FromArgb(255, (int)hitCount, (int)hitCount, (int)hitCount);
+						color = Color.FromArgb(255, hitCount, hitCount, hitCount);
 					}
 					else
 					{
@@ -33,12 +29,10 @@ namespace Lorenz_Attractor
 					bitmap.SetPixel(width, height, color);
 				}
 			}
-			Console.WriteLine("Biggest hit: "+Lorenz.biggestHit);
 			bitmap.Save("image.png");
-			Console.WriteLine("Exported.");
+			Console.WriteLine("Exported. Press Any Key to Open.");
 			Console.ReadKey();
 			System.Diagnostics.Process.Start("image.png");
-
 		}
 	}
 }
